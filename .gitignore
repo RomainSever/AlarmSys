@@ -1,0 +1,6 @@
+/.cache
+/build
+/catch.hpp
+/compile_commands.json
+/problem.cpp
+/problem.h

@@ -16,7 +16,7 @@ int main(int, char *[]) {
 
   // Initialize the alarm executor (start the alarm execution thread with a
   // silent alarm).
-  Executor exe;
+  Executor exe(execution_period);
 
   // Start the user interface
   std::string user_input = "";

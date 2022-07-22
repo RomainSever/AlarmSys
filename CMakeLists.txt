@@ -8,7 +8,7 @@ LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_library(AlarmSys problem.cpp problem.h)
+add_library(AlarmSys Alarm.cpp Executor.cpp)
 
 target_include_directories (AlarmSys PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

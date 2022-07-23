@@ -12,7 +12,7 @@ public:
   /**
    * Create a silent alarm that has no beep and a execution period equal to the
    * Executor execution period and add it to the active alarm list. Open the
-   * alarm_output_ file "alarm_output_.txt" and start the silent alarm
+   * alarm_output_ file "alarm_output.txt" and start the silent alarm
    * execution.
    *
    * @param execution_period  The unity of time of one sound of the alarm. Must
@@ -28,7 +28,8 @@ public:
 
   /**
    * Add @a alarm to the list of activated alarms. If an alarm of the same
-   * priority already exist delete it.
+   * priority already exist delete it. Then call
+   * @c executeHighestPriorityPattern().
    *
    * @param alarm The alarm to activate / deactivate.
    *
@@ -37,6 +38,7 @@ public:
    */
   void toggleAlarm(const Alarm &alarm);
 
+private:
   /**
    * Find the alarm with the highest priority in the list of active alarms. If
    * it's different from the currently playing alarm, stop the execution thread
@@ -47,9 +49,8 @@ public:
    * and is represented by a 'X' in the output file. Silence by a '_'. Sound
    * writing frequency depends on the execution_period_.
    */
-  void executePattern();
+  void executeHighestPriorityPattern();
 
-private:
   // Thread that execute the active alarm with the highest priority.
   std::jthread executor_thread_;
   // Output file where alarm sounds are written.

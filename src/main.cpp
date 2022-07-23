@@ -11,7 +11,7 @@ int main(int, char *[]) {
 
   // Initialize the alarm executor (start the alarm execution thread with a
   // silent alarm).
-  Executor exe(execution_period);
+  Executor executor(execution_period);
 
   // Start the user interface
   std::string user_input = "";
@@ -31,8 +31,7 @@ int main(int, char *[]) {
                  alarms_library,
                  [&user_input](Alarm a) { return a.getKey() == user_input; });
              result != alarms_library.end()) {
-      exe.toggleAlarm(*result);
-      exe.executePattern();
+      executor.toggleAlarm(*result);
     } else {
       std::cout << "No alarm bound to the key: " << user_input << std::endl;
     }

@@ -1,4 +1,5 @@
 #include "include/Executor.hpp"
+#include <iostream>
 
 Executor::Executor(const std::chrono::milliseconds &execution_period) {
   // Check parameters validity.
@@ -8,15 +9,14 @@ Executor::Executor(const std::chrono::milliseconds &execution_period) {
   execution_period_ = execution_period;
   auto silent = Alarm("silent_alarm", 0, execution_period_);
   silent.setPattern(0s, execution_period_, 0, 0s);
-  activated_alarms_ = {silent};
-  alarm_output_.open("alarm_output_.txt");
-  executePattern();
+  alarm_output_.open("alarm_output.txt");
+  toggleAlarm(silent);
 };
 
 Executor::~Executor() {
-  if (executor_thread_.joinable()) {
-    executor_thread_.join();
-  }
+
+  executor_thread_.request_stop();
+  executor_thread_.join();
   alarm_output_.close();
 };
 
@@ -26,21 +26,26 @@ void Executor::toggleAlarm(const Alarm &alarm) {
     throw std::invalid_argument(
         "Execution period of the alarm: " +
         std::to_string(alarm.getExecutionPeriod().count()) +
-        " doesn't math Executor execution period: " +
+        " doesn't match Executor execution period: " +
         std::to_string(execution_period_.count()));
   }
 
   // If an alarm of the same priority already exist, deactivate it. Else
-  // activate @a alarm.
+  // activate this alarm.
   if (!std::erase_if(activated_alarms_, [alarm](const auto &active) {
         return active.getPriority() == alarm.getPriority();
       })) {
     activated_alarms_.push_back(alarm);
   }
+  executeHighestPriorityPattern();
 }
 
-void Executor::executePattern() {
-  // Parse the list of active alarms to find th e one with the highest priority.
+void Executor::executeHighestPriorityPattern() {
+  if (activated_alarms_.empty()) {
+    std::cout << "No active alarm to execute" << std::endl;
+    return;
+  }
+  // Parse the list of active alarms to find the one with the highest priority.
   auto highest = std::ranges::max(activated_alarms_, [](Alarm a, Alarm b) {
     return a.getPriority() < b.getPriority();
   });

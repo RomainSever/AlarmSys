@@ -33,7 +33,6 @@ public:
    * the beep patterns, we add multiple silences of 250ms defined by @a
    * silence_duration.
    *
-   *
    * @param beep_duration Duration of one beep sound. Used with beep_pause to
    * create one beep pattern.
    * @param silence_duration Duration of the silence between beep patterns.
@@ -56,6 +55,18 @@ public:
   const std::chrono::milliseconds &getExecutionPeriod() const;
 
 private:
+  /**
+   * If @a variable_to_check != 0, check if @a variable_to_check is >= and a
+   * multiple of execution_period_. If not, throws a std::invalid_argument with
+   * a message that contains @a variable_name.
+   *
+   * @param variable_to_check Variable to compare with execution_period_.
+   * @param variable_name Name to display in the error message.
+   * @throws std::invalid_argument if @a variable_to_check doesn't respect
+   * criterions.
+   */
+  void checkEntryValidity(const std::chrono::milliseconds &variable_to_check,
+                          const std::string &variable_name);
   // Key used to toggle the alarm.
   std::string key_;
   // Priority to define which alarm to execute.

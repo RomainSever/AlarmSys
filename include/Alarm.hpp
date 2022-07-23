@@ -65,3 +65,15 @@ private:
   // Sound pattern unit of time.
   std::chrono::milliseconds execution_period_;
 };
+
+// Specific Alarms.
+struct LowPriorityAlarm : Alarm {
+  LowPriorityAlarm();
+};
+struct MediumPriorityAlarm : Alarm {
+
+  MediumPriorityAlarm();
+};
+struct HighPriorityAlarm : Alarm {
+  HighPriorityAlarm();
+};

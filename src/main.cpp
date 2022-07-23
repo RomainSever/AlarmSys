@@ -6,13 +6,8 @@ using namespace std::chrono_literals;
 int main(int, char *[]) {
   auto execution_period = 250ms;
   // Create basic alarms and add them to the library.
-  auto low = Alarm("l", 1, execution_period);
-  low.setPattern(1s, 30s);
-  auto med = Alarm("m", 2, execution_period);
-  med.setPattern(250ms, 1s);
-  auto high = Alarm("h", 3, execution_period);
-  high.setPattern(250ms, 2s, 5, 500ms);
-  std::vector<Alarm> alarms_library = {low, med, high};
+  std::vector<Alarm> alarms_library = {
+      LowPriorityAlarm(), MediumPriorityAlarm(), HighPriorityAlarm()};
 
   // Initialize the alarm executor (start the alarm execution thread with a
   // silent alarm).

@@ -63,3 +63,13 @@ const SoundPattern &Alarm::getPattern() const { return pattern_; };
 const std::chrono::milliseconds &Alarm::getExecutionPeriod() const {
   return execution_period_;
 };
+
+HighPriorityAlarm::HighPriorityAlarm() : Alarm("h", 3, 250ms) {
+  setPattern(250ms, 2s, 5, 500ms);
+};
+MediumPriorityAlarm::MediumPriorityAlarm() : Alarm("m", 2, 250ms) {
+  setPattern(250ms, 1s);
+};
+LowPriorityAlarm::LowPriorityAlarm() : Alarm("l", 1, 250ms) {
+  setPattern(1s, 30s);
+};
